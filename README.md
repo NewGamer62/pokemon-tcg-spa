@@ -1,92 +1,129 @@
-# TCG SPA — Trading Card Game
+# ⚡ Pokémon TCG SPA — Real-Time Multiplayer Card Game
 
-Dans ce TP, vous allez construire une **Single Page Application** Vue 3 pour un jeu de cartes Pokemon en ligne. L'objectif est d'implémenter le frontend complet qui s'appuie sur une API REST et un serveur Socket.io déjà fournis.
+<p align="center">
+  <img src="https://img.shields.io/badge/Vue.js-3.5%2B-4FC08D?style=for-the-badge&logo=vuedotjs&logoColor=white" alt="Vue 3" />
+  <img src="https://img.shields.io/badge/TypeScript-5.6%2B-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Vite-5.4-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
+  <img src="https://img.shields.io/badge/Pinia-2.2-FFD859?style=for-the-badge&logo=pinia&logoColor=black" alt="Pinia" />
+  <img src="https://img.shields.io/badge/Socket.io-4.8-010101?style=for-the-badge&logo=socketdotio&logoColor=white" alt="Socket.io" />
+  <img src="https://img.shields.io/badge/UI-Naive%20UI-18A058?style=for-the-badge" alt="Naive UI" />
+  <img src="https://img.shields.io/badge/Docker-Backend%20Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
+  <img src="https://img.shields.io/badge/Tests-34%20Passed-brightgreen?style=for-the-badge" alt="Tests" />
+  <img src="https://img.shields.io/badge/Licence-MIT-blue?style=for-the-badge" alt="Licence" />
+</p>
 
-L'application permet à un utilisateur de :
+---
 
-- Créer un compte et se connecter
-- Gérer des decks de 10 cartes Pokemon
-- Rejoindre un lobby de matchmaking en ligne
-- Jouer une partie en temps réel contre un autre joueur
+## 📌 Présentation
 
-> **L'API doit tourner sur `http://localhost:3001` avant de démarrer le projet.**
-> Utilisez Docker pour démarrer l'API et la base de données (voir section [Lancer le backend](#lancer-le-backend-avec-docker)).
+**Pokémon TCG SPA** est une application web moderne (Single Page Application) développée en **Vue 3**, **TypeScript** et **WebSockets (Socket.io)** reproduisant fidèlement l'expérience d'un jeu de cartes à collectionner Pokémon en ligne.
 
-## Prérequis
+L'application intègre un cycle complet d'interaction joueur :
 
-### Node.js (v24)
+1. **Authentification sécurisée** (JWT, session persistante et guards de navigation).
+2. **Atelier de Deck Building** avec gestion de decks de 10 cartes, moteur de recherche instantané sans latence et prévisualisation haute fidélité.
+3. **Arène multijoueur temps réel** synchronisée par WebSockets avec matchmaking, gestion du tour par tour, pioche, attaques élémentaires et calcul des conditions de victoire.
 
-| Système                 | Lien                              |
-| ----------------------- | --------------------------------- |
-| Windows / macOS / Linux | [nodejs.org](https://nodejs.org/) |
+🎨 **Maquettes graphiques de référence :** [Consulter le prototype Figma](https://making-rerun-61323218.figma.site/)
 
-**Via nvm (recommandé)**
+---
 
-| Système       | Lien                                                               |
-| ------------- | ------------------------------------------------------------------ |
-| macOS / Linux | [nvm](https://github.com/nvm-sh/nvm#installing-and-updating)       |
-| Windows       | [nvm-windows](https://github.com/coreybutler/nvm-windows/releases) |
+## ✨ Fonctionnalités Majeures
 
-### Docker (pour le backend)
+### ⚔️ Duels Temps Réel & Matchmaking (Socket.io)
 
-| Système                 | Lien                                                          |
-| ----------------------- | ------------------------------------------------------------- |
-| Windows / macOS / Linux | [docker.com](https://www.docker.com/products/docker-desktop/) |
+- **Lobby en direct** : Rejoindre ou créer une file d'attente multijoueur avec sélection préalable de son deck.
+- **Plateau de jeu interactif** : Zone active, banc, main du joueur masquée à l'adversaire et affichage dynamique des points de vie (PV).
+- **Moteur de règles & contraintes** :
+  - Validation stricte des tours de jeu.
+  - Pioche limitée à 5 cartes en main maximum.
+  - Exécution des attaques élémentaires avec calcul des faiblesses/résistances et animation des K.O.
+  - Détection automatique de fin de partie au bout de 3 K.O. avec modal récapitulatif.
 
-> **Compte Docker Hub requis** : sur les réseaux partagés (école, université), Docker peut renvoyer une erreur `pull access denied` en raison du rate limiting des pulls anonymes. Créez un compte gratuit sur [hub.docker.com](https://hub.docker.com/signup) puis connectez-vous avec `docker login` avant de lancer le backend.
+### 🎴 Deck Builder & Gestionnaire de Cartes
 
-### Outils recommandés
+- **Création, édition et suppression de decks** de 10 cartes Pokémon.
+- **Moteur de recherche temps réel** :
+  - Filtrage instantané insensible à la casse et aux diacritiques (accents).
+  - Préservation de la sélection active même lors des recherches filtrées.
+  - Filtre dédié affichant uniquement les cartes sélectionnées.
+- **Optimisation réseau & Cache partagé** : Déduplication de requêtes en vol (_promise deduplication_) et cache mémoire évitant tout rechargement superflu du catalogue de cartes.
+- **Aperçu miniature haute définition** des cartes au sein de la liste des decks.
 
-- **Éditeur** : [VS Code](https://code.visualstudio.com/) ou [WebStorm](https://www.jetbrains.com/webstorm/)
-- **Extension navigateur** : [Vue DevTools](https://devtools.vuejs.org/)
+### 📱 Responsive Design & Architecture UI
 
-## Installation
+- Interface entièrement responsive adaptée du mobile au grand écran desktop.
+- Composants riches alimentés par **Naive UI** (formulaires, modales, grilles adaptatives, loaders).
+- Thème dynamique avec calcul automatique des couleurs élémentaires (Feu, Eau, Plante, Électrique, etc.).
 
-### 1. Installer les dépendances
+---
+
+## 🛠️ Stack Technique
+
+| Domaine                  | Technologies                                                                               |
+| :----------------------- | :----------------------------------------------------------------------------------------- |
+| **Framework Core**       | **Vue 3.5** (Composition API, `<script setup>`)                                            |
+| **Typage**               | **TypeScript 5.6** (Contrats stricts pour modèles, cartes, decks et events WebSocket)      |
+| **Bundler & Tooling**    | **Vite 5.4**, ESLint, Prettier                                                             |
+| **State Management**     | **Pinia 2.2** (Stores découplés : `auth.store.ts`, `game.store.ts`)                        |
+| **Routage**              | **Vue Router 4** (Navigation guards RG2/RG3 protégés par JWT)                              |
+| **Composants UI**        | **Naive UI** (Composants natifs performants sans overhead)                                 |
+| **Réseau & Temps Réel**  | **Socket.io Client** (Événements bidirectionnels en duplex intégral) + Composable `useApi` |
+| **Backend & Base (Dev)** | **Node.js**, **Express**, **Socket.io**, **PostgreSQL** orchestrés sous **Docker Compose** |
+| **Assurance Qualité**    | **Node.js Native Test Runner** (34 tests unitaires & intégration)                          |
+
+---
+
+## 🏗️ Structure du Projet
+
+```
+pokemon-tcg-spa/
+├── src/
+│   ├── components/
+│   │   ├── cards/          # Cartes Pokémon individuelles, grilles et badges
+│   │   ├── decks/          # Formulaires, sélection et explorateur de decks
+│   │   ├── game/           # Plateau de jeu, lobby, main, actions et modale de fin
+│   │   └── layout/         # HeaderBar, navigation et profil utilisateur
+│   ├── composables/        # useApi, useColors, useDecks, useStorage
+│   ├── pages/              # Vues : Home, Auth, DeckDetail/Edit, Game
+│   ├── stores/             # Stores Pinia (auth, game)
+│   ├── types/              # Définitions TypeScript complètes (carte, deck, jeu, socket)
+│   └── utils/              # Logique métier pure (règles de jeu, validation deck, calculs PV)
+├── tests/                  # Suites de tests automatisés (decks.test.mjs, game.test.mjs)
+├── docker-compose.yml      # Stack backend complète (API + Base de données)
+└── vite.config.ts          # Configuration de compilation et alias de chemins
+```
+
+---
+
+## 🚀 Démarrage Rapide
+
+### Prérequis
+
+- **Node.js 24+** (ou via nvm : `nvm use 24`)
+- **Docker Desktop** (pour faire tourner le backend local)
+
+### 1. Cloner le dépôt
+
+```bash
+git clone https://github.com/NewGamer62/pokemon-tcg-spa.git
+cd pokemon-tcg-spa
+```
+
+### 2. Installer les dépendances
 
 ```bash
 npm install
 ```
 
-### 2. Configuration de l'environnement
+### 3. Lancer le backend et la base de données (Docker)
 
 ```bash
-cp .env.example .env
+npm run api:start
 ```
 
-```env
-VITE_API_BASE_URL=http://localhost:3001/api
-VITE_SOCKET_URL=http://localhost:3001
-```
-
-Ces variables pointent vers le backend Docker local. Ne modifiez pas ces valeurs pour le développement.
-
-> **Déploiement Vercel** : le fichier `.env.production` (déjà commité) contient les variables pointant vers le backend hébergé. Le projet Vercel est créé automatiquement au premier déploiement — seul le secret `VERCEL_TOKEN` est nécessaire (voir issue #0).
-
-### 3. Lancer le backend
-
-Un `docker-compose.yml` est fourni pour démarrer l'API et PostgreSQL en une seule commande :
-
-```bash
-npm run api:start   # Démarrer l'API et la base de données (arrière-plan)
-npm run api:stop    # Arrêter les services
-npm run api:reset   # Remettre la base de données à zéro (re-seed)
-```
-
-Cela démarre :
-
-- **PostgreSQL** sur le port `5432` avec les données de seed (cartes Pokémon + comptes de test)
-- **L'API REST + Socket.io** sur `http://localhost:3001`
-- **Documentation Swagger** sur `http://localhost:3001/api-docs` — également disponible en ligne : [tcg-api-csgd.onrender.com/api-docs](https://tcg-api-csgd.onrender.com/api-docs)
-
-**Comptes de test disponibles après le seed :**
-
-| Utilisateur | Email            | Mot de passe |
-| ----------- | ---------------- | ------------ |
-| red         | red@example.com  | password123  |
-| blue        | blue@example.com | password123  |
-
-> Les données PostgreSQL sont persistées dans un volume Docker (`postgres_data`). Pour repartir de zéro : `docker-compose down -v`.
+> Démarre automatiquement PostgreSQL sur le port `5432` et l'API Socket.io sur `http://localhost:3001` avec les cartes et utilisateurs pré-configurés.  
+> _Documentation Swagger interactive disponible sur : `http://localhost:3001/api-docs`._
 
 ### 4. Démarrer le serveur de développement
 
@@ -94,128 +131,38 @@ Cela démarre :
 npm run dev
 ```
 
-L'application est accessible sur **http://localhost:5173**.
+L'application est immédiatement accessible sur **http://localhost:5173**.
 
-## Commandes disponibles
+---
 
-```bash
-npm run dev          # Démarrer le serveur de développement
-npm run build        # Build de production
-npm run lint         # Linter ESLint
-npm run lint:fix     # ESLint avec correction automatique
-npm run format       # Formater avec Prettier
-npm run format:check # Vérifier le formatage
-npm run api:start    # Démarrer l'API + base de données (arrière-plan)
-npm run api:stop     # Arrêter l'API + base de données
-npm run api:reset    # Remettre la base de données à zéro (re-seed)
-```
+## 🧪 Comptes de Test (Seed Inclus)
 
-## Rappels techniques
+Après initialisation du backend Docker, deux comptes joueurs prêts à l'emploi sont disponibles pour tester le matchmaking en duel :
 
-### Naive UI
+| Identifiant | Email              | Mot de passe  |
+| :---------- | :----------------- | :------------ |
+| **Red**     | `red@example.com`  | `password123` |
+| **Blue**    | `blue@example.com` | `password123` |
 
-Tous les composants Naive UI (`NButton`, `NForm`, `NInput`, `NGrid`, `NCard`, `NModal`, etc.) sont enregistrés **globalement** — utilisez-les directement dans les templates sans import.
+_Vous pouvez également créer de nouveaux comptes directement depuis la page d'inscription._
 
-```vue
-<template>
-  <NCard title="Mon deck">
-    <NSpace vertical>
-      <NInput v-model:value="name" placeholder="Nom du deck" />
-      <NButton type="primary" @click="handleSubmit">Créer</NButton>
-    </NSpace>
-  </NCard>
-</template>
-```
+---
 
-> Documentation : [naiveui.com](https://www.naiveui.com/en-US/os-theme/components/button)
-
-### TypeScript
-
-Le typage est un **prérequis attendu** tout au long du TP. Typez vos props, vos `ref`, et les données reçues de l'API ou des événements Socket.io. Les types de base sont fournis, complétez-les au fur et à mesure.
-
-### useApi
-
-Le composable `useApi()` expose toutes les méthodes HTTP. Le token JWT est injecté automatiquement dans chaque requête.
-
-```ts
-const api = useApi()
-
-// Auth
-api.signIn({ email, password }) // → AuthResponse
-api.signUp({ email, password, username }) // → AuthResponse
-
-// Cartes
-api.getCards() // → Card[]
-
-// Decks
-api.getMyDecks() // → Deck[]
-api.getDeck(id) // → Deck
-api.createDeck({ name, cards }) // cards = tableau de 10 cardId
-api.updateDeck(id, { name, cards })
-api.deleteDeck(id)
-```
-
-# Comment réaliser ce TP
-
-## Initialiser les issues — à faire une seule fois
-
-1. Allez sur l'onglet **Actions** de votre dépôt GitHub
-2. Sélectionnez le workflow **"Setup repo"**
-3. Cliquez sur **"Run workflow"** puis confirmez
-
-Le workflow crée les **issues** du TP.
-
-## Workflow de travail
-
-Pour chaque ticket :
-
-### 1. Récupérer l'issue
-
-Les issues GitHub contiennent l'objectif, les conseils et les exigences de chaque ticket.
-
-### 2. Créer une branche
-
-Depuis l'issue GitHub, utilisez le bouton **"Create a branch"** pour créer une branche dédiée :
+## 📋 Commandes Disponibles
 
 ```bash
-git checkout -b 1-store-authentification
+npm run dev          # Démarrer le serveur Vite local
+npm run build        # Compiler pour la production (TypeScript + bundling Vite)
+npm test             # Exécuter les 34 tests unitaires et d'intégration
+npm run lint         # Analyse statique ESLint
+npm run api:start    # Démarrer le backend Docker (API REST + Socket.io)
+npm run api:stop     # Arrêter le backend Docker
+npm run api:reset    # Réinitialiser la base de données à blanc (re-seed)
 ```
 
-### 3. Développer et commiter
+---
 
-```bash
-git add .
-git commit -m "feat: store d'authentification et guards"
-git push origin 1-store-authentification
-```
+## 🎓 Contexte Académique
 
-### 4. Ouvrir une Pull Request
-
-1. Créez une PR vers `main` depuis votre branche
-2. Le pipeline déploie automatiquement une **preview Vercel** et poste l'URL en commentaire
-
-### 5. Demander une review
-
-Assignez **@vfourny** comme reviewer. Le professeur vérifie les exigences du ticket, la qualité du code et le bon fonctionnement de la preview.
-
-### 6. Merge et notation
-
-Après validation, la PR est mergée dans `main`, l'issue se ferme automatiquement et le ticket est noté.
-
-## Maquettes
-
-Les maquettes de référence sont disponibles sur Figma :
-
-🎨 [Voir les maquettes sur Figma](https://making-rerun-61323218.figma.site/)
-
-## Barème
-
-| #         | Ticket             | Détail                                                                                   | Points |
-| --------- | ------------------ | ---------------------------------------------------------------------------------------- | ------ |
-| 1         | Authentification   | Store d'authentification + guards + pages connexion et inscription                       | 3      |
-| 2         | Decks              | Composants de carte + liste des decks + création + détail et édition                     | 5      |
-| 3         | Jeu en temps réel  | Store de jeu + lobby + complétion du store + page de jeu + composants main/actions/modal | 7      |
-| 4         | Barre de recherche | Filtrage en temps réel dans le formulaire de deck                                        | 2      |
-| 5         | Responsive design  | Adaptation mobile/tablette/desktop sur l'ensemble de l'application                       | 2      |
-| 6         | Aperçu des cartes  | Miniatures des cartes dans la liste des decks                                            | 1      |
-| **Total** |                    |                                                                                          | **20** |
+Projet réalisé par **Noa Gaillard** (`NewGamer62`) dans le cadre de la **SAÉ Développement Web Avancé** (BUT Informatique, IUT de Lens).  
+Conception d'une architecture frontend temps réel complète conforme aux exigences professionnelles d'accessibilité, de typage strict et de performance réseau.
