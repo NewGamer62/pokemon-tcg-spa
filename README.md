@@ -9,7 +9,7 @@
   <img src="https://img.shields.io/badge/UI-Naive%20UI-18A058?style=for-the-badge" alt="Naive UI" />
   <img src="https://img.shields.io/badge/Docker-Backend%20Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
   <img src="https://img.shields.io/badge/Tests-34%20Passed-brightgreen?style=for-the-badge" alt="Tests" />
-  <img src="https://img.shields.io/badge/Licence-MIT-blue?style=for-the-badge" alt="Licence" />
+  <img src="https://img.shields.io/badge/Projet-BUT%20Informatique-blueviolet?style=for-the-badge" alt="BUT Informatique" />
 </p>
 
 ---
